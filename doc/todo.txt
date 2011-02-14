@@ -1,0 +1,7 @@
+tyyppien versiointi
+sha1 määrittelystä tunnistaa version
+tyyppi viittaa muihin tyyppeihin sha1:llä
+
+migraatioiden kuvaus tyyppiversoiden välillä
+generoidaan automaattisesti silloin kun tietoa ei menetetä
+muuten annetaan vaihtoehtoja mitä tehdään

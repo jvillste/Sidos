@@ -1,0 +1,7 @@
+  fi.sirunsivut.persons {
+
+    person {
+      name : string
+      nickNames : string list
+    }
+  }

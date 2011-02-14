@@ -1,0 +1,12 @@
+org.sidos.browser.widget {
+  org.sidos.metamodel as metamodel
+
+  tableModel{
+    columns : columnModel list
+  }
+
+  columnModel {
+    domainTypeHash : string
+    propertyName : string
+  }
+}

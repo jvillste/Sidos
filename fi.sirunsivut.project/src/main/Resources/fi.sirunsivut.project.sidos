@@ -1,0 +1,14 @@
+  fi.sirunsivut.project {
+    fi.sirunsivut.persons as persons
+
+    task {
+      name : string
+      responsibles : persons.person list
+      created : time
+    }
+
+    call : task {
+      numberToCall : string
+    }
+
+  }

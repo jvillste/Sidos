@@ -1,0 +1,40 @@
+fi.sirunsivut.project{
+
+	task {
+		name : string
+		responsibles : person list
+	}
+
+	call : task {
+		numberToCall : number {
+			name = org.sidos.localizedString { language = "fi", value = "Numero" }
+		}
+	}
+
+	person {
+
+	}
+
+}
+
+import fi.sirunsivut.project 
+jukka : person { name = "JUkka" }
+task { name = "Soita sille", responsible = jukka }
+
+
+org.sidos.table {
+
+	table {
+		columns : column list
+	}
+
+	column {
+		direction : direction
+		name : string
+		predicate : string
+	}
+
+	direction [
+		forward, backward
+	]
+}
