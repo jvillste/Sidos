@@ -125,11 +125,11 @@ entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,
       typeClassTemplate.setAttribute("properties", _type.properties.map((property) => {
 
         val propertyType = (ripNamespace(property.range.name), property.associationType) match {
-          case ("string",AssociationType.Single) => "org.sidos.codegeneration.Property[String]"
+          case ("string",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[String]"
           case ("string",AssociationType.List) => "org.sidos.codegeneration.ListProperty[String]"
-          case ("boolean",AssociationType.Single) => "org.sidos.codegeneration.Property[java.lang.Boolean]"
+          case ("boolean",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[java.lang.Boolean]"
           case ("boolean",AssociationType.List) => "org.sidos.codegeneration.ListProperty[java.lang.Boolean]"
-          case ("time",AssociationType.Single) => "org.sidos.codegeneration.Property[java.util.Date]"
+          case ("time",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[java.util.Date]"
           case ("time",AssociationType.List) => "org.sidos.codegeneration.ListProperty[java.util.Date]"
           case (_,AssociationType.Single) => "org.sidos.codegeneration.EntityProperty"
           case (_,AssociationType.List) => "org.sidos.codegeneration.EntityListProperty"

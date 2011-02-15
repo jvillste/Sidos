@@ -4,7 +4,7 @@ import scala.collection.mutable.{Map,Set => MutableSet}
 import java.util.UUID
 import org.sidos.database.DataAccess
 
-case class ListChange[+T]()
+class ListChange[+T]()
 case class Add[T](index:Int, value:T) extends ListChange[T]
 case class Remove[T](index:Int) extends ListChange[T]
 case class Change[T](index:Int, value:T) extends ListChange[T]
