@@ -13,6 +13,12 @@ import java.util.ArrayList
 object Generator
 {
   def main(args: Array[String]) {
+
+    if(args.size < 2)
+    {
+      println("The Generator needs two arguments")
+      return;
+    }
     new Generator().generate(args(0), args(1))
   }
 }
@@ -20,6 +26,20 @@ object Generator
 class Generator
 {
   def generate(sourceDirectory: String, targetDirectory: String) {
+    def directoryExists(path:String) : Boolean = {
+      if(!new File(sourceDirectory).exists)
+      {
+        println(sourceDirectory + "does not exist")
+        return false
+      }else
+      {
+        return true
+      }
+    }
+
+    if(!directoryExists(sourceDirectory) || !directoryExists(targetDirectory))
+      return;
+
     var source = ""
     for (file <- new File(sourceDirectory).listFiles) {
       if (!file.isDirectory)

@@ -2,13 +2,13 @@ import sbt._
 
 class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with IdeaProject
 {
+  lazy val juvi = project("juvi", "juvi", new DefaultProject(_) with IdeaProject)
+  lazy val model = project("org.sidos.model", "org.sidos.model", new ModelProject(_),juvi)
+  lazy val sidos = project("org.sidos", "org.sidos", new SidosProject(_),juvi,model)
 
-  lazy val juvi = project("juvi", "juvi", new DefaultProject(_) with IdeaProject with ModelGenerator)
   lazy val sirunsivutProject = project("fi.sirunsivut.project", "fi.sirunsivut.project", new DefaultProject(_) with IdeaProject, sidos)
-  lazy val sidos = project("org.sidos", "org.sidos", new SidosProject(_), juvi)
-  lazy val model = project("org.sidos.model", "org.sidos.model", new ModelProject(_))
 
-  class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with ModelGenerator
+  class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject
   {
     val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
 	  val akka = "Akka Maven2 Repository" at "http://www.scalablesolutions.se/akka/repository/"
@@ -20,38 +20,33 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
 	  val h2 = "com.h2database" % "h2" % "1.2.144" withSources ()
 	  val scalatest = "org.scalatest" % "scalatest" % "1.2" withSources ()
     val scalaSwing = "org.scala-lang" % "scala-swing" % "2.8.1" withSources()
+
+    val dependOnJuvi = juvi
+    
+    override def mainSourceRoots = super.mainSourceRoots +++ ( "src" / "generated" ##)
   }
   
   class ModelProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with ProguardProject
-{
-  val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
-  val scalasti = "org.clapper" % "scalasti_2.8.1" % "0.5.1"
-	
-  //project name
-  override val artifactID = "APIGenerator"
+  {
+    val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
+    val scalasti = "org.clapper" % "scalasti_2.8.1" % "0.5.1"
 
-  //program entry point
-  override def mainClass: Option[String] = Some("org.sidos.codegeneration.Generator")
+    //project name
+    override val artifactID = "APIGenerator"
 
-  //proguard
-  override def proguardOptions = List(
-    "-keepclasseswithmembers public class * { public static void main(java.lang.String[]); }",
-    "-dontoptimize",
-    "-dontobfuscate",
-    proguardKeepLimitedSerializability,
-    proguardKeepAllScala,
-    "-keep interface scala.ScalaObject"
-  )
-  override def proguardInJars = Path.fromFile(scalaLibraryJar) +++ super.proguardInJars
-}
+    //program entry point
+    override def mainClass: Option[String] = Some("org.sidos.codegeneration.Generator")
 
-
-  trait ModelGenerator extends Project {
-    lazy val generate = task {
-
-      log.info(outputPath.toString);
-      None
-    }
+    //proguard
+    override def proguardOptions = List(
+      "-keepclasseswithmembers public class * { public static void main(java.lang.String[]); }",
+      "-dontoptimize",
+      "-dontobfuscate",
+      proguardKeepLimitedSerializability,
+      proguardKeepAllScala,
+      "-keep interface scala.ScalaObject"
+    )
+    override def proguardInJars = Path.fromFile(scalaLibraryJar) +++ super.proguardInJars
   }
 
 }
