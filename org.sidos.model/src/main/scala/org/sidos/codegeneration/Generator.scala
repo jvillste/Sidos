@@ -13,7 +13,8 @@ import java.util.ArrayList
 object Generator
 {
   def main(args: Array[String]) {
-
+    println(args(0))
+    println(args.size)
     if(args.size < 2)
     {
       println("The Generator needs two arguments")
