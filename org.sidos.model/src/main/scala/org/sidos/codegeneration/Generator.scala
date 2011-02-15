@@ -9,9 +9,16 @@ import io.Source
 import java.io.{FileWriter, File, StringReader}
 import java.util.ArrayList
 
+
+object Generator
+{
+  def main(args: Array[String]) {
+    new Generator().generate(args(0), args(1))
+  }
+}
+
 class Generator
 {
-
   def generate(sourceDirectory: String, targetDirectory: String) {
     var source = ""
     for (file <- new File(sourceDirectory).listFiles) {

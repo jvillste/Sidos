@@ -7,7 +7,6 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
   lazy val sirunsivutProject = project("fi.sirunsivut.project", "fi.sirunsivut.project", new DefaultProject(_) with IdeaProject, sidos)
   lazy val sidos = project("org.sidos", "org.sidos", new SidosProject(_), juvi)
   lazy val model = project("org.sidos.model", "org.sidos.model", new ModelProject(_))
-  lazy val generator = project("org.sidos.sbt.apigenerator",model)
 
   class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with ModelGenerator
   {
@@ -20,7 +19,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
 	  val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % "1.0-RC3" withSources ()
 	  val h2 = "com.h2database" % "h2" % "1.2.144" withSources ()
 	  val scalatest = "org.scalatest" % "scalatest" % "1.2" withSources ()
-
+    val scalaSwing = "org.scala-lang" % "scala-swing" % "2.8.1" withSources()
   }
   
   class ModelProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with ProguardProject
@@ -32,7 +31,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
   override val artifactID = "APIGenerator"
 
   //program entry point
-  override def mainClass: Option[String] = Some("org.sidos.model.apigenerator.APIGenerator")
+  override def mainClass: Option[String] = Some("org.sidos.codegeneration.Generator")
 
   //proguard
   override def proguardOptions = List(

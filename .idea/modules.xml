@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/juvi/juvi.iml" filepath="$PROJECT_DIR$/juvi/juvi.iml" />
       <module fileurl="file://$PROJECT_DIR$/org.sidos/org.sidos.iml" filepath="$PROJECT_DIR$/org.sidos/org.sidos.iml" />
       <module fileurl="file://$PROJECT_DIR$/org.sidos.model/org.sidos.model.iml" filepath="$PROJECT_DIR$/org.sidos.model/org.sidos.model.iml" />
-      <module fileurl="file://$PROJECT_DIR$/org.sidos.sbt.apigenerator/org.sidos.sbt.apigenerator.iml" filepath="$PROJECT_DIR$/org.sidos.sbt.apigenerator/org.sidos.sbt.apigenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/project/project.iml" filepath="$PROJECT_DIR$/project/project.iml" />
     </modules>
   </component>
