@@ -20,7 +20,8 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
 	  val h2 = "com.h2database" % "h2" % "1.2.144" withSources ()
 	  val scalatest = "org.scalatest" % "scalatest" % "1.2" withSources ()
     val scalaSwing = "org.scala-lang" % "scala-swing" % "2.8.1" withSources()
-
+    val testNG = "org.testng" % "testng" % "5.14"
+    
     val dependOnJuvi = juvi
     
     override def mainSourceRoots = super.mainSourceRoots +++ ( "src" / "generated" ##)
@@ -30,7 +31,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
   {
     val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
     val scalasti = "org.clapper" % "scalasti_2.8.1" % "0.5.1"
-
+    val testNG = "org.testng" % "testng" % "5.14"
 
     lazy val generateSidosApi = runTask(getMainClass(true), runClasspath, Array("org.sidos/src/main/resources", "org.sidos/src/generated")) dependsOn(compile, copyResources)
 

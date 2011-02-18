@@ -6,3 +6,4 @@ project/boot/
 .idea/workspace.xml
 .idea/libraries
 */src/generated
+/test-output
