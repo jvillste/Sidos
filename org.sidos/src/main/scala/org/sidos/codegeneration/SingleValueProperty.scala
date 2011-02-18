@@ -1,9 +1,9 @@
 package org.sidos.codegeneration
 
-class SingleValueProperty[T:ClassManifest](val entity:Entity, val propertyName:String) extends Property
+class SingleValueProperty[T:ClassManifest](val entity:Entity, val typeHash:String, val propertyName:String) extends Property
 {
-  def get : T = entity.get[T](propertyName)
-  def set(value:T) { entity.set(propertyName,value) }
+  def get : T = entity.get[T](typeHash, propertyName)
+  def set(value:T) { entity.set(typeHash, propertyName,value) }
 
   def addListener(callback : (T)=>Unit)
   {

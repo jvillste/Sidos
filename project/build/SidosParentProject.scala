@@ -8,7 +8,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
 
   lazy val sirunsivutProject = project("fi.sirunsivut.project", "fi.sirunsivut.project", new DefaultProject(_) with IdeaProject, sidos)
 
-  class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject
+  class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with SidosProjectBase
   {
     val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
 	  val akka = "Akka Maven2 Repository" at "http://www.scalablesolutions.se/akka/repository/"
@@ -23,8 +23,6 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
     val testNG = "org.testng" % "testng" % "5.14"
     
     val dependOnJuvi = juvi
-    
-    override def mainSourceRoots = super.mainSourceRoots +++ ( "src" / "generated" ##)
   }
   
   class ModelProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with ProguardProject
@@ -52,5 +50,10 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
     )
     override def proguardInJars = Path.fromFile(scalaLibraryJar) +++ super.proguardInJars
   }
+
+ trait SidosProjectBase extends BasicScalaProject
+ {
+   abstract override def mainSourceRoots = super.mainSourceRoots +++ ( "src" / "generated" ##)
+ }
 
 }

@@ -30,11 +30,11 @@ class GeneratorTests extends TestNGSuite with ShouldMatchers {
 
     }
     """
-    println(System.getProperty("user.dir"));
-    new Generator().generateFromSource(source,"org.sidos.model/src/generated")
+    //val list = List()
+    //println(if(list.size > 0)  "extends " +  list.head + list.tail.foldLeft("")( _ + " with " + _) else "")
+    //new org.sidos.codegeneration.Generator().generateFromSource(model,"org.sidos.model/src/generated")
 
 //    SidosCompiler.compile(model).foreach(_type => println(_type.name + " " + _type.superTypes.size))
 
   }
 }
-

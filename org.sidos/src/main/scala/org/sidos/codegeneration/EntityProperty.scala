@@ -3,10 +3,10 @@ package org.sidos.codegeneration
 import java.util.UUID
 import org.sidos.database.Database
 
-class EntityProperty[T <: Entity](val entity:Entity, val propertyName:String, constructor : (Database, UUID)=>T) extends Property
+class EntityProperty[T <: Entity](val entity:Entity, val typeHash:String, val propertyName:String, constructor : (Database, UUID)=>T) extends Property
 {
-  def get : T = constructor(entity.database, entity.get[UUID](propertyName))
-  def set(value:T) : Unit = entity.set(propertyName,value.id)
+  def get : T = constructor(entity.database, entity.get[UUID](typeHash, propertyName))
+  def set(value:T) : Unit = entity.set(typeHash, propertyName,value.id)
 
   def addListener(callback : (T)=>Unit)
   {

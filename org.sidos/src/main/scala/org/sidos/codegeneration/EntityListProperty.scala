@@ -4,10 +4,10 @@ import java.util.UUID
 import org.sidos.database.Database
 import org.sidos.database.notification._
 
-class EntityListProperty[T <: Entity](val entity:Entity, val propertyName:String, constructor : (Database, UUID)=>T) extends ListDataSource[T] with Property
+class EntityListProperty[T <: Entity](val entity:Entity, val typeHash:String, val propertyName:String, constructor : (Database, UUID)=>T) extends ListDataSource[T] with Property
 {
-  def add(value:T) : Unit =  entity.addToList(propertyName, value.id)
-  def get : List[T] = entity.getList[UUID](propertyName).map(constructor(entity.database,_))
+  def add(value:T) : Unit =  entity.addToList(typeHash, propertyName, value.id)
+  def get : List[T] = entity.getList[UUID](typeHash, propertyName).map(constructor(entity.database,_))
 
   def bind(callback : (ListChange[T])=>Unit)
   {

@@ -1,5 +1,6 @@
 package org.sidos.database.query
 
+import models.{EqualsStringRepository, EqualsString, QueryRepository, Query}
 import org.sidos.database.Database
 import java.util.UUID
 
@@ -23,6 +24,7 @@ class Query()
   def Count{}
   def ToList(take:Int, skip:Int) {}
   def First {}
+
 }
 
 

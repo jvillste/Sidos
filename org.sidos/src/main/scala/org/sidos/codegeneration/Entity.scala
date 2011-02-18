@@ -6,10 +6,9 @@ import java.util.{Date, UUID}
 trait Entity{
   def database:Database
   def id:UUID
-  def typeHash:String
 
-  def set[T:ClassManifest]( propertyName:String, value:T ) { database.set(typeHash,id,propertyName,value) }
-  def get[T:ClassManifest]( propertyName:String) : T = database.get[T](typeHash,id,propertyName)
-  def addToList[T:ClassManifest]( propertyName:String, value:T ) { database.addToList(typeHash, id, propertyName, value)}
-  def getList[T:ClassManifest]( propertyName:String ) : List[T] = { database.getList[T](typeHash, id, propertyName) }
+  def set[T:ClassManifest](typeHash:String, propertyName:String, value:T ) { database.set(typeHash,id,propertyName,value) }
+  def get[T:ClassManifest](typeHash:String, propertyName:String) : T = database.get[T](typeHash,id,propertyName)
+  def addToList[T:ClassManifest](typeHash:String, propertyName:String, value:T ) { database.addToList(typeHash, id, propertyName, value)}
+  def getList[T:ClassManifest](typeHash:String, propertyName:String ) : List[T] = { database.getList[T](typeHash, id, propertyName) }
 }

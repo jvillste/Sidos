@@ -7,8 +7,7 @@ import scala.reflect.BeanProperty
 import org.clapper.scalasti.StringTemplateGroup
 import io.Source
 import java.io.{FileWriter, File, StringReader}
-import java.util.ArrayList
-
+import java.util.{Locale, ArrayList}
 
 object Generator
 {
@@ -36,7 +35,7 @@ class Generator
         if (file.getName.toLowerCase.endsWith(".sidos"))
         {
           println("adding source file 2" + file.getName)
-          source += Source.fromFile(file).mkString
+          source += Source.fromFile(file,"UTF8").mkString
         }
     }
 
@@ -49,7 +48,6 @@ class Generator
     if(!directoryExists(targetDirectory))
       return;
 
-    println("compiling: " + source)
     for (_type <- SidosCompiler.compile(source))
     {
       println("generating type " + _type.name)
@@ -74,25 +72,29 @@ class Generator
 
   def generate(_type:Type, targetDirectory:String)
   {
+
       def ripNamespace(fullName:String) = fullName.drop(fullName.lastIndexOf(".") + 1)
       def ripName(fullName:String) = fullName.take(fullName.lastIndexOf("."))
       def capitalizeFirstLetter(value:String) = value.take(1).toUpperCase + value.drop(1)
       def getGeneratedTypeName(_type:Type) = capitalizeFirstLetter(ripNamespace(_type.name))
+      def getFullGeneratedTypeName(_type:Type) = ripName(_type.name) + "." + getGeneratedTypeName(_type)
 
       val typeClassTemplate = new StringTemplateGroup( Source.fromString(
 """
 group sidos;
 
-entity(packageName, typeName, typeFullName, typeHash, properties) ::= <<
+entity(packageName, typeName, typeFullName, typeHash, properties, extends) ::= <<
 
 package <packageName>
 
-
-class <typeName>(val database: org.sidos.database.Database, val id:java.util.UUID) extends org.sidos.codegeneration.Entity
+trait <typeName> extends org.sidos.codegeneration.Entity <extends>
 {
-  def typeHash = <typeName>.typeHash
 
   <properties:property()>
+}
+
+class <typeName>Entity(val database: org.sidos.database.Database, val id:java.util.UUID) extends org.sidos.codegeneration.Entity with <packageName>.<typeName>
+{
 
 }
 
@@ -109,10 +111,10 @@ object <typeName>
 
 property() ::= <<
 <if(it.isEntityProperty)>
-val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, "<it.fullName>", (database:org.sidos.database.Database,id:java.util.UUID) => new <it.rangeClassName>(database,id))
+val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.typeHash, "<it.fullName>", (database:org.sidos.database.Database,id:java.util.UUID) => new <it.rangeClassName>Entity(database,id))
 
 <else>
-val <it.name> = new <it.propertyType>(this, "<it.fullName>")
+val <it.name> = new <it.propertyType>(this, <it.domainClassName>.typeHash, "<it.fullName>")
 
 <endif>
 >>
@@ -120,17 +122,16 @@ val <it.name> = new <it.propertyType>(this, "<it.fullName>")
 typeProperty() ::= <<
 entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>) :: entityType.properties
 
->>
-
-""")).template("entity")
+>>""")).template("entity")
 
 
-      case class Property(@BeanProperty val name:String,
-                     @BeanProperty val fullName:String,
-                     @BeanProperty val propertyType:String,
-                     @BeanProperty val rangeClassName:String,
-                     @BeanProperty val associationType:String,
-                     @BeanProperty val isEntityProperty:Boolean)
+      case class Property(@BeanProperty name:String,
+                     @BeanProperty fullName:String,
+                     @BeanProperty propertyType:String,
+                     @BeanProperty rangeClassName:String,
+                     @BeanProperty domainClassName:String,
+                     @BeanProperty associationType:String,
+                     @BeanProperty isEntityProperty:Boolean)
 
       typeClassTemplate.setAttribute("properties", _type.properties.map((property) => {
 
@@ -145,18 +146,27 @@ entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,
           case (_,AssociationType.List) => "org.sidos.codegeneration.EntityListProperty"
         }
 
-        val rangeClassName = ripName(property.range.name) + "." + getGeneratedTypeName(property.range)
-
-        Property(ripNamespace(property.name), property.name, propertyType, rangeClassName, property.associationType.toString, propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"))
-
+        Property(name = ripNamespace(property.name),
+                fullName = property.name,
+                propertyType = propertyType,
+                rangeClassName = getFullGeneratedTypeName(property.range),
+                domainClassName = getFullGeneratedTypeName(property.domain),
+                associationType = property.associationType.toString,
+                isEntityProperty = propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"))
       }): _*)
 
+      //val extendsString =  if(_type.superTypes.size > 0)  "extends " +  getFullGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_)) else ""
+      val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))
 
+      typeClassTemplate.setAttribute("extends", extendsString)
 
       typeClassTemplate.setAttribute("packageName", ripName(_type.name))
       typeClassTemplate.setAttribute("typeName", getGeneratedTypeName(_type))
       typeClassTemplate.setAttribute("typeFullName", _type.name)
       typeClassTemplate.setAttribute("typeHash", _type.hash)
+
+
+
 
       writeFile(targetDirectory, ripName(_type.name), getGeneratedTypeName(_type)  + ".scala", typeClassTemplate.toString)
 
@@ -171,7 +181,7 @@ package <packageName>
 
 class <typeName>Repository(database:org.sidos.database.Database){
   def create = {
-    new <typeName>(database, database.createEntity(<typeName>.typeHash))
+    new <typeName>Entity(database, database.createEntity(<typeName>.typeHash))
   }
 
   <properties:property()>
@@ -181,15 +191,15 @@ class <typeName>Repository(database:org.sidos.database.Database){
 >>
 
 property() ::= <<
-def getBy<it.name>(value:<it.range>) = new <it.domain>(database, database.getBy(<it.domain>.typeHash, "<it.fullName>", value).head)
+def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.getBy(<it.domain>.typeHash, "<it.fullName>", value).head)
 
 >>
 """)).template("repository")
 
-    case class RepositoryProperty(@BeanProperty val name:String,
-                                 @BeanProperty val fullName:String,
-                                 @BeanProperty val domain:String,
-                                 @BeanProperty val range:String)
+    case class RepositoryProperty(@BeanProperty name:String,
+                                 @BeanProperty fullName:String,
+                                 @BeanProperty domain:String,
+                                 @BeanProperty range:String)
 
 
     def getScalaTypeName(typeName:String) = typeName match {
