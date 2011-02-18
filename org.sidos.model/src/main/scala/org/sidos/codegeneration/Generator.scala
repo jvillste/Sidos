@@ -26,16 +26,6 @@ object Generator
 class Generator
 {
   def generate(sourceDirectory: String, targetDirectory: String) {
-    def directoryExists(path:String) : Boolean = {
-      if(!new File(sourceDirectory).exists)
-      {
-        println(sourceDirectory + "does not exist")
-        return false
-      }else
-      {
-        return true
-      }
-    }
 
     if(!directoryExists(sourceDirectory) || !directoryExists(targetDirectory))
       return;
@@ -50,6 +40,15 @@ class Generator
         }
     }
 
+    generateFromSource(source, targetDirectory)
+
+  }
+
+  def generateFromSource(source:String, targetDirectory:String)
+  {
+    if(!directoryExists(targetDirectory))
+      return;
+
     println("compiling: " + source)
     for (_type <- SidosCompiler.compile(source))
     {
@@ -59,6 +58,17 @@ class Generator
       }catch {
         case e:Exception => println(e.toString)
       }
+    }
+  }
+
+  def directoryExists(path:String) : Boolean = {
+    if(!new File(path).exists)
+    {
+      println(path + "does not exist")
+      return false
+    }else
+    {
+      return true
     }
   }
 

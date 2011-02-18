@@ -13,15 +13,28 @@ class GeneratorTests extends TestNGSuite with ShouldMatchers {
     org.sidos.database.query.models
     {
 
-      filterOperator
-
-      equalsString : filterOperator
+      labelled
       {
-        value : string
+        label : string
       }
+
+      labelView
+      {
+        labelled : labelled
+      }
+
+      task : labelled
+      {
+         description : string      
+      }
+
     }
     """
-    SidosCompiler.compile(model).foreach(_type => println(_type.name + " " + _type.superTypes.size))
+    println(System.getProperty("user.dir"));
+    new Generator().generateFromSource(source,"org.sidos.model/src/generated")
+
+//    SidosCompiler.compile(model).foreach(_type => println(_type.name + " " + _type.superTypes.size))
 
   }
 }
+
