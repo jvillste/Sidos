@@ -6,7 +6,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
   lazy val model = project("org.sidos.model", "org.sidos.model", new ModelProject(_),juvi)
   lazy val sidos = project("org.sidos", "org.sidos", new SidosProject(_),juvi,model)
 
-  lazy val sirunsivutProject = project("fi.sirunsivut.project", "fi.sirunsivut.project", new DefaultProject(_) with IdeaProject, sidos)
+  lazy val sirunsivutProject = project("fi.sirunsivut.project", "fi.sirunsivut.project", new DefaultProject(_) with IdeaProject with SidosProjectBase, sidos)
 
   class SidosProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject with SidosProjectBase
   {
@@ -32,6 +32,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
     val testNG = "org.testng" % "testng" % "5.14"
 
     lazy val generateSidosApi = runTask(getMainClass(true), runClasspath, Array("org.sidos/src/main/resources", "org.sidos/src/generated")) dependsOn(compile, copyResources)
+    lazy val generateProjectApi = runTask(getMainClass(true), runClasspath, Array("fi.sirunsivut.project/src/main/resources", "fi.sirunsivut.project/src/generated")) dependsOn(compile, copyResources)
 
     //project name
     override val artifactID = "APIGenerator"

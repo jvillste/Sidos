@@ -160,6 +160,9 @@ entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,
 
       typeClassTemplate.setAttribute("extends", extendsString)
 
+
+      val superTypesList = getGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + ", " + getGeneratedTypeName(_))
+
       typeClassTemplate.setAttribute("packageName", ripName(_type.name))
       typeClassTemplate.setAttribute("typeName", getGeneratedTypeName(_type))
       typeClassTemplate.setAttribute("typeFullName", _type.name)
