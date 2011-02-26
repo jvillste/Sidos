@@ -100,14 +100,19 @@ class <typeName>Entity(val database: org.sidos.database.Database, val id:java.ut
 
 object <typeName>
 {
-  val typeHash = "<typeHash>"
 
   val entityType = new org.sidos.model.Type("<typeFullName>")
+
+  def create(database:org.sidos.database.Database) = {
+    new <typeName>Entity(database, database.createEntity(<typeName>.typeHash))
+  }
+
   <properties:typeProperty()>
 
 }
 
 >>
+
 
 property() ::= <<
 <if(it.isEntityProperty)>
@@ -120,7 +125,8 @@ val <it.name> = new <it.propertyType>(this, <it.domainClassName>.typeHash, "<it.
 >>
 
 typeProperty() ::= <<
-entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>) :: entityType.properties
+val <it.name> = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>)
+entityType.properties =  <it.name> :: entityType.properties
 
 >>""")).template("entity")
 
@@ -155,20 +161,16 @@ entityType.properties = new org.sidos.model.Property("<it.fullName>",entityType,
                 isEntityProperty = propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"))
       }): _*)
 
-      //val extendsString =  if(_type.superTypes.size > 0)  "extends " +  getFullGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_)) else ""
       val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))
 
       typeClassTemplate.setAttribute("extends", extendsString)
 
-
-      val superTypesList = getGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + ", " + getGeneratedTypeName(_))
+//      val superTypesList = getGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + ", " + getGeneratedTypeName(_))
 
       typeClassTemplate.setAttribute("packageName", ripName(_type.name))
       typeClassTemplate.setAttribute("typeName", getGeneratedTypeName(_type))
       typeClassTemplate.setAttribute("typeFullName", _type.name)
       typeClassTemplate.setAttribute("typeHash", _type.hash)
-
-
 
 
       writeFile(targetDirectory, ripName(_type.name), getGeneratedTypeName(_type)  + ".scala", typeClassTemplate.toString)
@@ -183,9 +185,6 @@ repository(packageName, typeName, properties) ::= <<
 package <packageName>
 
 class <typeName>Repository(database:org.sidos.database.Database){
-  def create = {
-    new <typeName>Entity(database, database.createEntity(<typeName>.typeHash))
-  }
 
   <properties:property()>
 

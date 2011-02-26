@@ -1,5 +1,7 @@
 package org.sidos.codegeneration
 
+import org.sidos.database.query.models.{EqualsStringEntity, EqualsString}
+
 class SingleValueProperty[T:ClassManifest](val entity:Entity, val typeHash:String, val propertyName:String) extends Property
 {
   def get : T = entity.get[T](typeHash, propertyName)

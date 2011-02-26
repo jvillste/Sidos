@@ -30,4 +30,4 @@ class Query()
 
 class PropertyQuery(database:Database, subjectID:UUID, property:PropertyDefinition) extends Query
 
-class InstanceQuery(database:Database, typeHash:String)
+class InstanceQuery(database:Database, typeHash:String) extends Query

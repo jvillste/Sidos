@@ -1,5 +1,5 @@
 package fi.sirunsivut
-
+/*
 import org.sidos.model.{Type}
 import org.sidos.model.compiler.{SidosCompiler}
 import org.sidos.database.h2.H2ConnectionProvider
@@ -93,3 +93,4 @@ object Project
   }
 
 }
+*/

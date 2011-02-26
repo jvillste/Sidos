@@ -82,6 +82,9 @@ trait Database extends JDBC with Relational with PropertyNotification
     
     if(!isTypeDefined(_type))
     {
+
+      _type.superTypes.foreach(addType(_))
+
       createTypeTables(_type)
 
       val typeEntity = createEntity(typeTypeEntity)
