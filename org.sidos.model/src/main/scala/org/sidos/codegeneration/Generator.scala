@@ -104,7 +104,7 @@ object <typeName>
   val entityType = new org.sidos.model.Type("<typeFullName>")
 
   def create(database:org.sidos.database.Database) = {
-    new <typeName>Entity(database, database.createEntity(<typeName>.typeHash))
+    new <typeName>Entity(database, database.createEntity(entityType.hash))
   }
 
   <properties:typeProperty()>
@@ -116,10 +116,10 @@ object <typeName>
 
 property() ::= <<
 <if(it.isEntityProperty)>
-val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.typeHash, "<it.fullName>", (database:org.sidos.database.Database,id:java.util.UUID) => new <it.rangeClassName>Entity(database,id))
+val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (database:org.sidos.database.Database,id:java.util.UUID) => new <it.rangeClassName>Entity(database,id))
 
 <else>
-val <it.name> = new <it.propertyType>(this, <it.domainClassName>.typeHash, "<it.fullName>")
+val <it.name> = new <it.propertyType>(this, <it.domainClassName>.entityType.hash, "<it.fullName>")
 
 <endif>
 >>
@@ -222,7 +222,8 @@ def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.
     repositoryTemplate.setAttribute("packageName", ripName(_type.name))
     repositoryTemplate.setAttribute("typeName", getGeneratedTypeName(_type))
 
-    writeFile(targetDirectory, ripName(_type.name), getGeneratedTypeName(_type)  + "Repository.scala", repositoryTemplate.toString)
+    // Repositorys will be replaced by queries
+    // writeFile(targetDirectory, ripName(_type.name), getGeneratedTypeName(_type)  + "Repository.scala", repositoryTemplate.toString)
 
 
   }

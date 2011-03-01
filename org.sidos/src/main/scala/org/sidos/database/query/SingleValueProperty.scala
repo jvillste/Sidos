@@ -8,7 +8,7 @@ trait SingleValueProperty[T] {
   def typeHash:String
 
 
-  def orderBy = (database:Database) => new SortingEntity(database, database.createEntity(Sorting.typeHash))
+  def orderBy = (database:Database) => Sorting.create(database)
 
   def equals(value:T) =
   {
@@ -16,7 +16,7 @@ trait SingleValueProperty[T] {
       case v : String => {(database:Database) =>
 
         val equalsString = EqualsString.create(database)
-        equalsString.value.set(value)
+        equalsString.value.set(v)
 
         val filter = Filter.create(database)
         filter.filterOperator.set(equalsString)

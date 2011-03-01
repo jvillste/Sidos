@@ -13,7 +13,7 @@ object TableConstructors
   def table(columnConstructors:(Database => ColumnModel)*)(database:Database) =
   {
 
-    val tableModel = new TableModelRepository(database).create
+    val tableModel = TableModel.create(database)
 
     columnConstructors.foreach(columnCreator => tableModel.columns.add(columnCreator(database)))
 
@@ -23,7 +23,7 @@ object TableConstructors
 
   def column(property:Property)(database:Database) =
   {
-    val columnModel = new ColumnModelRepository(database).create
+    val columnModel = ColumnModel.create(database)
     columnModel.domainTypeHash.set(property.typeHash)
     columnModel.propertyName.set(property.propertyName)
     columnModel

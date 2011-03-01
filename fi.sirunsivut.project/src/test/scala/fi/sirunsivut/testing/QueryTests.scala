@@ -10,6 +10,7 @@ import org.sidos.database.DatabaseDefinition
 import org.sidos.database.Database
 import org.sidos.database.query.models._
 import fi.sirunsivut.project.Task
+import fi.sirunsivut.persons.Person
 
 class QueryTests extends TestNGSuite with ShouldMatchers {
     @Test
@@ -19,13 +20,16 @@ class QueryTests extends TestNGSuite with ShouldMatchers {
       database.createMetamodelSchema
 
       database.addType(Task.entityType)
+      database.addType(Person.entityType)
+
+      val person = Person.create(database)
+      person.name.set("Julle")
 
       val task = Task.create(database)
       task.name.set("Do work")
+      task.responsibles.add(person)
 
-      val query = Task.instances
-      query.filters = List(Task.name.equals("Do work"))
-      
+      val query = Task.instances.where(Task.name.equalsString("Do work") or Task.responsibles.contains(person))
 
       println("jees")
     }
