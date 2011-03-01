@@ -25,7 +25,7 @@ org.sidos.database.query.models
 
   query
   {
-    filters : filter list
+    filter : filter
     sortings : sorting list
   }
 
