@@ -2,52 +2,58 @@ package org.sidos.database.query
 
 import org.sidos.database.Database
 import java.util.UUID
+import org.sidos.model.Type
+import org.sidos.codegeneration.Entity
 
 class PropertyDefinition(val domainTypeHash:String, val propertyName:String)
 
-class Sorting(propertyName:String, descending:Boolean)
+case class Ordering(propertyName:String, descending:Boolean)
 
-trait FilterExpression
 class BooleanExpression
 {
   def or(otherBooleanExpression:BooleanExpression) = Or(this,otherBooleanExpression)
+  def and(otherBooleanExpression:BooleanExpression) = And(this,otherBooleanExpression)
+
 }
-case class EqualsString(property:Property, value:String) extends BooleanExpression
+
+case class Like(propertyName:String, value:String) extends BooleanExpression
 case class Or(booleanExpression1:BooleanExpression,booleanExpression2:BooleanExpression) extends BooleanExpression
+case class And(booleanExpression1:BooleanExpression,booleanExpression2:BooleanExpression) extends BooleanExpression
+case object True extends BooleanExpression
 
-class Property
+case class ContainsEntity(propertyName:String, id:UUID) extends BooleanExpression
+
+trait QueryableProperty
 {
-  def equalsString(value:String) = EqualsString(this,value)
+  def domain:Type
+  def name:String
+  
+  def ascending = Ordering(name,false)
+  def descending = Ordering(name,true)
 }
 
-object Person
+trait QueryableStringProperty extends QueryableProperty
 {
-  val name = new Property
+  def like(value:String) = Like(name,value)
 }
 
-class Tests
+trait QueryableEntityListProperty[T <: Entity] extends QueryableProperty
 {
-
-  Person.name.equalsString("FOO")  or Person.name.equalsString("FOO2")
+  def contains(entity:T) = ContainsEntity(name, entity.id)
 }
 
-
-class Filter(propertyName:String,filterOperator:FilterExpression )
 
 class Query()
 {
-  var sortings = List.empty[Sorting]
-  var filters = List.empty[Filter]
-  
-  def Count{}
-  def ToList(take:Int, skip:Int) {}
-  def First {}
+  var orderings = List.empty[Ordering]
+  var filter:BooleanExpression = True
+  var takeCount:Option[Int] = None
+  var skipCount:Option[Int] = None
 
+  def where(booleanExpression:BooleanExpression) = { filter = booleanExpression; this }
+  def orderBy(orderings:Ordering*) = { this.orderings = orderings.toList; this }
+  def take(takeCount:Int) = { this.takeCount = Some(takeCount); this }
+  def skip(skipCount:Int) = { this.skipCount = Some(skipCount); this }
 }
 
-
-class PropertyQuery(database:Database, subjectID:UUID, property:PropertyDefinition) extends Query
-
-class InstanceQuery(typeHash:String) extends Query
-
-
+case class InstanceQuery(typeHash:String) extends Query

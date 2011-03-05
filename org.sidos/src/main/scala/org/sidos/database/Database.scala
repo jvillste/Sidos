@@ -78,8 +78,7 @@ trait Database extends JDBC with Relational with PropertyNotification
 
   def addType(_type:Type)
   {
-    println("add type " + _type.hash + " "  + _type.name)
-    
+
     if(!isTypeDefined(_type))
     {
 
@@ -95,7 +94,7 @@ trait Database extends JDBC with Relational with PropertyNotification
 
   def addTypeMetadata(typeEntity:UUID, _type:Type)
   {
-    println("addTypeMetadata " + _type.hash)
+
     set(typeTypeHash, typeEntity, "org.sidos.metamodel.type.name",_type.name)
     set(typeTypeHash, typeEntity, "org.sidos.metamodel.type.hash",_type.hash)
     for(property <- _type.properties)
@@ -110,7 +109,7 @@ trait Database extends JDBC with Relational with PropertyNotification
 
   def createEntity(typeHash:String) : UUID =
   {
-    println("create entity " + typeHash)
+
     val _type : UUID = getBy(typeTypeHash,"org.sidos.metamodel.type.hash",typeHash).head
     createEntity(_type)
   }
