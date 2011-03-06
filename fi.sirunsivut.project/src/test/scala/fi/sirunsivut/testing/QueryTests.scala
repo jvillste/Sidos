@@ -29,7 +29,11 @@ class QueryTests extends TestNGSuite with ShouldMatchers {
       task.name.set("Do work")
       task.responsibles.add(person)
 
-      val query = Task.instances.where(Task.name.like("Do%") or Task.responsibles.contains(person)).orderBy(Task.name.ascending).skip(10).take(10)
+      val query = Task.instances.where(task => task.name._like("Do%") or task.responsibles._contains(person)).orderBy(task => List(task.name._ascending)).skip(10).take(10)
       println(query.filter)
+      val query2 = Task.instances.where(task => task.client.colleague.name._like("Julle"))
+      println(query2.filter)
+
+
     }
 }

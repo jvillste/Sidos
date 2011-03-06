@@ -109,9 +109,17 @@ object <typeName>
     new <typeName>Entity(database, database.createEntity(entityType.hash))
   }
 
-  def instances = org.sidos.database.query.InstanceQuery(entityType.hash)
-
+  def instances = org.sidos.database.query.InstanceQuery(entityType.hash, () => new <typeName>Pattern)
+  
   <properties:typeProperty()>
+
+}
+
+class <typeName>Pattern(val path:List[String] = List.empty[String])
+{
+  private def outerPath = path
+  
+  <properties:patternProperty()>
 
 }
 
@@ -128,10 +136,22 @@ val <it.name> = new <it.propertyType>(this, <it.domainClassName>.entityType.hash
 >>
 
 typeProperty() ::= <<
-val <it.name> = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>) <it.queryTypeDefinition>
+val <it.name> = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>)
 entityType.properties =  <it.name> :: entityType.properties
 
 >>
+
+patternProperty() ::= <<
+<if(it.isEntityProperty)>
+def <it.name> = new <it.rangeClassName>Pattern("<it.fullName>" :: outerPath) with <it.queryablePropertyType>
+
+<else>
+def <it.name> = new <it.queryablePropertyType> { def path = "<it.fullName>" :: outerPath }
+
+<endif>
+>>
+
+
 
 """)).getInstanceOf("entity")
 
@@ -143,7 +163,7 @@ entityType.properties =  <it.name> :: entityType.properties
                      @BeanProperty domainClassName:String,
                      @BeanProperty associationType:String,
                      @BeanProperty isEntityProperty:Boolean,
-                     @BeanProperty queryTypeDefinition:String)
+                     @BeanProperty queryablePropertyType:String)
 
       typeClassTemplate.setAttribute("properties", _type.properties.map((property) => {
 
@@ -158,20 +178,21 @@ entityType.properties =  <it.name> :: entityType.properties
           case (_,AssociationType.List) => "org.sidos.codegeneration.EntityListProperty"
         }
 
-        val queryTypeDefinitionOption = (ripNamespace(property.range.name), property.associationType) match {
-          case ("string",AssociationType.Single) => Some("org.sidos.database.query.QueryableStringProperty")
-          case ("boolean",_) => None
-          case ("time",_) => None
-          case (_,AssociationType.List) => Some("org.sidos.database.query.QueryableEntityListProperty[" + getFullGeneratedTypeName(property.range) + "]")
-          case (_,AssociationType.Single) => Some("org.sidos.database.query.QueryableEntityProperty[" + getFullGeneratedTypeName(property.range) + "]")
+        val queryablePropertyType = (ripNamespace(property.range.name), property.associationType) match {
+          case ("string",AssociationType.Single) => "org.sidos.database.query.QueryableStringProperty"
+          case ("boolean",AssociationType.Single) => "org.sidos.database.query.QueryableBooleanProperty"
+          case ("time",AssociationType.Single) => "org.sidos.database.query.QueryableTimeProperty"
+          case (_,AssociationType.List) => "org.sidos.database.query.QueryableEntityListProperty[" + getFullGeneratedTypeName(property.range) + "]"
+          case (_,AssociationType.Single) => "org.sidos.database.query.QueryableEntityProperty[" + getFullGeneratedTypeName(property.range) + "]"
         }
 
-        //val queryTypeDefinition = (for(value <- queryTypeDefinitionOption) yield " with " + value.get) getOrElse ""
-        val queryTypeDefinition = queryTypeDefinitionOption match {
+        //val queryablePropertyDefinition = (for(value <- queryTypeDefinitionOption) yield " with " + value.get) getOrElse ""
+        /*
+        val queryablePropertyDefinition = queryTypeDefinitionOption match {
           case Some(value) => " with " + value
           case _ => ""
         }
-
+*/
 
         Property(name = ripNamespace(property.name),
                 fullName = property.name,
@@ -180,7 +201,7 @@ entityType.properties =  <it.name> :: entityType.properties
                 domainClassName = getFullGeneratedTypeName(property.domain),
                 associationType = property.associationType.toString,
                 isEntityProperty = propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"),
-                queryTypeDefinition = queryTypeDefinition)
+                queryablePropertyType = queryablePropertyType)
 
       }).toArray)
 

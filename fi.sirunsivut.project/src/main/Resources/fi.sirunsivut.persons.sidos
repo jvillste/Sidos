@@ -2,6 +2,7 @@
 
     person {
       name : string
+      colleague : person
       nickNames : string list
     }
   }
