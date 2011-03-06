@@ -42,6 +42,11 @@ trait QueryableEntityListProperty[T <: Entity] extends QueryableProperty
   def contains(entity:T) = ContainsEntity(name, entity.id)
 }
 
+trait QueryableEntityProperty[T <: Entity] extends QueryableProperty
+{
+  def has(booleanExpression:BooleanExpression) = ContainsEntity(name, entity.id)
+}
+
 
 class Query()
 {

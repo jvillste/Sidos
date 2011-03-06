@@ -4,6 +4,7 @@
     task {
       name : string
       responsibles : persons.person list
+      client : persons.person
       created : time
     }
 

@@ -30,6 +30,7 @@ class SidosParentProject(info: ProjectInfo) extends ParentProject(info) with Ide
     val scalaTools = "Scala-Tools" at "http://scala-tools.org/repo-releases"
     val scalasti = "org.clapper" % "scalasti_2.8.1" % "0.5.1"
     val testNG = "org.testng" % "testng" % "5.14"
+    val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1" withSources()
 
     lazy val generateSidosApi = runTask(getMainClass(true), runClasspath, Array("org.sidos/src/main/resources", "org.sidos/src/generated")) dependsOn(compile, copyResources)
     lazy val generateProjectApi = runTask(getMainClass(true), runClasspath, Array("fi.sirunsivut.project/src/main/resources", "fi.sirunsivut.project/src/generated")) dependsOn(compile, copyResources)

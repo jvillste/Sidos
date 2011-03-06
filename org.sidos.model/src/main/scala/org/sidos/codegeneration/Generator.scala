@@ -4,7 +4,8 @@ import org.sidos.model.compiler.SidosCompiler
 import scala.collection.JavaConversions._
 import org.sidos.model.{Type,AssociationType}
 import scala.reflect.BeanProperty
-import org.clapper.scalasti.StringTemplateGroup
+//import org.clapper.scalasti.StringTemplateGroup
+import org.antlr.stringtemplate.StringTemplateGroup
 import io.Source
 import java.io.{FileWriter, File, StringReader}
 import java.util.{Locale, ArrayList}
@@ -34,7 +35,7 @@ class Generator
       if (!file.isDirectory)
         if (file.getName.toLowerCase.endsWith(".sidos"))
         {
-          println("adding source file 2" + file.getName)
+          println("adding source file " + file.getName)
           source += Source.fromFile(file,"UTF8").mkString
         }
     }
@@ -50,7 +51,6 @@ class Generator
 
     for (_type <- SidosCompiler.compile(source))
     {
-      println("generating type " + _type.name)
       try{
        generate(_type, targetDirectory)
       }catch {
@@ -79,7 +79,9 @@ class Generator
       def getGeneratedTypeName(_type:Type) = capitalizeFirstLetter(ripNamespace(_type.name))
       def getFullGeneratedTypeName(_type:Type) = ripName(_type.name) + "." + getGeneratedTypeName(_type)
 
-      val typeClassTemplate = new StringTemplateGroup( Source.fromString(
+    //val typeClassTemplate = new StringTemplateGroup("sidos").template("sidos")
+//val typeClassTemplate = new StringTemplateGroup( Source.fromString(
+      val typeClassTemplate = new StringTemplateGroup( new StringReader(
 """
 group sidos;
 
@@ -129,7 +131,9 @@ typeProperty() ::= <<
 val <it.name> = new org.sidos.model.Property("<it.fullName>",entityType,<it.rangeClassName>.entityType,org.sidos.model.AssociationType.<it.associationType>) <it.queryTypeDefinition>
 entityType.properties =  <it.name> :: entityType.properties
 
->>""")).template("entity")
+>>
+
+""")).getInstanceOf("entity")
 
 
       case class Property(@BeanProperty name:String,
@@ -159,6 +163,7 @@ entityType.properties =  <it.name> :: entityType.properties
           case ("boolean",_) => None
           case ("time",_) => None
           case (_,AssociationType.List) => Some("org.sidos.database.query.QueryableEntityListProperty[" + getFullGeneratedTypeName(property.range) + "]")
+          case (_,AssociationType.Single) => Some("org.sidos.database.query.QueryableEntityProperty[" + getFullGeneratedTypeName(property.range) + "]")
         }
 
         //val queryTypeDefinition = (for(value <- queryTypeDefinitionOption) yield " with " + value.get) getOrElse ""
@@ -177,7 +182,7 @@ entityType.properties =  <it.name> :: entityType.properties
                 isEntityProperty = propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"),
                 queryTypeDefinition = queryTypeDefinition)
 
-      }): _*)
+      }).toArray)
 
       val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))
 
@@ -193,10 +198,9 @@ entityType.properties =  <it.name> :: entityType.properties
 
       writeFile(targetDirectory, ripName(_type.name), getGeneratedTypeName(_type)  + ".scala", typeClassTemplate.toString)
 
-
-      val repositoryTemplate = new StringTemplateGroup( Source.fromString(
+    val repositoryTemplate = new StringTemplateGroup(new StringReader(
 """
-group sidos;
+group sidosrepository;
 
 repository(packageName, typeName, properties) ::= <<
 
@@ -214,7 +218,7 @@ property() ::= <<
 def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.getBy(<it.domain>.typeHash, "<it.fullName>", value).head)
 
 >>
-""")).template("repository")
+""")).getInstanceOf("repository")
 
     case class RepositoryProperty(@BeanProperty name:String,
                                  @BeanProperty fullName:String,
@@ -235,7 +239,7 @@ def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.
         getGeneratedTypeName(property.domain),
         getScalaTypeName(property.range.name))
 
-    }): _*)
+    }).toArray)
 
     repositoryTemplate.setAttribute("packageName", ripName(_type.name))
     repositoryTemplate.setAttribute("typeName", getGeneratedTypeName(_type))
@@ -250,7 +254,6 @@ def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.
   {
     val fileFullName = baseDirectory + "\\" + packageName.replace(".","\\") + "\\" + fileName
     println("Writing to  " + fileFullName)
-    println(contents)
     if(baseDirectory != null)
     {
       val file = new File(fileFullName)
