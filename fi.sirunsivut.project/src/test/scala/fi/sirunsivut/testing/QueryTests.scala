@@ -9,8 +9,9 @@ import org.sidos.database.h2.H2ConnectionProvider
 import org.sidos.database.DatabaseDefinition
 import org.sidos.database.Database
 import org.sidos.database.query.models._
-import fi.sirunsivut.project.Task
 import fi.sirunsivut.persons.Person
+import org.sidos.database.relational.RelationalQueryRunner
+import fi.sirunsivut.project.{TaskEntity, Task}
 
 class QueryTests extends TestNGSuite with ShouldMatchers {
     @Test
@@ -29,11 +30,13 @@ class QueryTests extends TestNGSuite with ShouldMatchers {
       task.name.set("Do work")
       task.responsibles.add(person)
 
+      /*
       val query = Task.instances.where(task => task.name._like("Do%") or task.responsibles._contains(person)).orderBy(task => List(task.name._ascending)).skip(10).take(10)
       println(query.filter)
       val query2 = Task.instances.where(task => task.client.colleague.name._like("Julle"))
       println(query2.filter)
-
+*/
+      database.list(Task.instances).foreach((task:TaskEntity) => println(task.name.get))
 
     }
 }

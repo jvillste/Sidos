@@ -2,8 +2,12 @@ package org.sidos.database
 
 import java.util.UUID
 
-
 trait DataAccess {
+
+
+  def addListener(subject: UUID, propertyName:String)(callback:(Any) => Unit)
+
+  def createEntity(typeHash:String) : UUID
 
   def get[T:ClassManifest](subjectTypeHash:String, subject:UUID, propertyName:String) : T
 

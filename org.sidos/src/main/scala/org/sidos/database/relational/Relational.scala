@@ -1,11 +1,12 @@
-package org.sidos.database
+package org.sidos.database.relational
 
 import juvi.JDBC
 import org.sidos.model.{Type,Property,AssociationType}
 import java.util.{Date, UUID}
 import java.sql.{Timestamp, PreparedStatement, ResultSet}
+import org.sidos.database.DataAccess
 
-trait Relational extends DataAccess with JDBC
+trait Relational extends DataAccess with JDBC with Naming
 {
 
   def createTypeTables(_type: Type): Unit = {
@@ -44,14 +45,6 @@ trait Relational extends DataAccess with JDBC
       getColumnName(property.name) + " " + getSQLType(property.range)
     }else throw new Exception()
   }
-
-  private def getColumnName(propertyName:String) = propertyName.replace(".", "_")
-
-  private def getListTableName(property:Property) : String = getListTableName(property.domain.hash,property.name)
-  private def getListTableName(domainHash:String, propertyName:String) : String = "list_" + domainHash + "_" + propertyName.replace(".","_")
-
-  private def getTypeTableName(_type:Type) : String =  getTypeTableName(_type.hash)
-  private def getTypeTableName(hash:String) : String = "type_" + hash
 
   private val stringClass = classOf[String]
   private val intClass = classOf[Int]

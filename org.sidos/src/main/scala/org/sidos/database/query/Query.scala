@@ -1,9 +1,9 @@
 package org.sidos.database.query
 
-import org.sidos.database.Database
 import java.util.UUID
 import org.sidos.model.Type
 import org.sidos.codegeneration.Entity
+import org.sidos.database.{DataAccess, Database}
 
 class PropertyDefinition(val domainTypeHash:String, val propertyName:String)
 
@@ -73,5 +73,5 @@ class Query[PatternType](patternFactory : () => PatternType)
   def skip(skipCount:Int) = { this.skipCount = Some(skipCount); this }
 }
 
-case class InstanceQuery[PatternType](typeHash:String,  patternFactory : () => PatternType) extends Query[PatternType](patternFactory)
+case class InstanceQuery[PatternType,EntityType](typeHash:String,  patternFactory : () => PatternType, val enitityFactory:(DataAccess,UUID) => EntityType) extends Query[PatternType](patternFactory)
 

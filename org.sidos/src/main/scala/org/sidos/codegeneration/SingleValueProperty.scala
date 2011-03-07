@@ -9,7 +9,7 @@ class SingleValueProperty[T:ClassManifest](val entity:Entity, val typeHash:Strin
 
   def addListener(callback : (T)=>Unit)
   {
-    entity.database.addListener(entity.id, propertyName){
+    entity.dataAccess.addListener(entity.id, propertyName){
       _ match {
         case value : T => callback(value)
       }

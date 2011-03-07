@@ -9,7 +9,7 @@ class ListProperty[T:ClassManifest](val entity:Entity, val typeHash:String, val 
 
   def addListener(callback : (ListChange[T])=>Unit)
   {
-    entity.database.addListener(entity.id, propertyName){
+    entity.dataAccess.addListener(entity.id, propertyName){
       _ match {
         case Add(index, value : T) => callback(Add(index,value))
         case Remove(index) => callback(Remove(index))

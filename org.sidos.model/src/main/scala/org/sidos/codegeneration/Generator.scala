@@ -95,7 +95,7 @@ trait <typeName> extends org.sidos.codegeneration.Entity <extends>
   <properties:property()>
 }
 
-class <typeName>Entity(val database: org.sidos.database.Database, val id:java.util.UUID) extends org.sidos.codegeneration.Entity with <packageName>.<typeName>
+class <typeName>Entity(val dataAccess: org.sidos.database.DataAccess, val id:java.util.UUID) extends org.sidos.codegeneration.Entity with <packageName>.<typeName>
 {
 
 }
@@ -105,11 +105,11 @@ object <typeName>
 
   val entityType = new org.sidos.model.Type("<typeFullName>")
 
-  def create(database:org.sidos.database.Database) = {
-    new <typeName>Entity(database, database.createEntity(entityType.hash))
+  def create(dataAccess:org.sidos.database.DataAccess) = {
+    new <typeName>Entity(dataAccess, dataAccess.createEntity(entityType.hash))
   }
 
-  def instances = org.sidos.database.query.InstanceQuery(entityType.hash, () => new <typeName>Pattern)
+  def instances = org.sidos.database.query.InstanceQuery(entityType.hash, () => new <typeName>Pattern, (dataAccess:org.sidos.database.DataAccess,id:java.util.UUID) => new <packageName>.<typeName>Entity(dataAccess,id))
   
   <properties:typeProperty()>
 
@@ -127,7 +127,7 @@ class <typeName>Pattern(val path:List[String] = List.empty[String])
 
 property() ::= <<
 <if(it.isEntityProperty)>
-val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (database:org.sidos.database.Database,id:java.util.UUID) => new <it.rangeClassName>Entity(database,id))
+val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,id:java.util.UUID) => new <it.rangeClassName>Entity(dataAccess,id))
 
 <else>
 val <it.name> = new <it.propertyType>(this, <it.domainClassName>.entityType.hash, "<it.fullName>")

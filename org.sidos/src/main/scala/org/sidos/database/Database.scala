@@ -5,8 +5,9 @@ import org.sidos.model.{Property, Type, AssociationType}
 import org.sidos.model.compiler.SidosCompiler
 import java.util.{Date, UUID}
 import java.sql.{Timestamp, PreparedStatement, ResultSet}
+import relational.{RelationalQueryRunner, Relational}
 
-trait Database extends JDBC with Relational with PropertyNotification
+trait Database extends JDBC with Relational with RelationalQueryRunner with PropertyNotification
 {
 
   val metamodel =
