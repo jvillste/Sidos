@@ -1,4 +1,4 @@
-org.sidos.browser.widget {
+org.sidos.browser.widget.table {
   org.sidos.metamodel as metamodel
 
   tableModel{

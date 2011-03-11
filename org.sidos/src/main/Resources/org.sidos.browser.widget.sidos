@@ -1,0 +1,9 @@
+org.sidos.browser.widget {
+  org.sidos.metamodel as metamodel
+
+  viewDefinition
+  {
+    viewTypeName : string
+  }
+
+}
