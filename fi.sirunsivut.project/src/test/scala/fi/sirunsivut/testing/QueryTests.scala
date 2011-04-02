@@ -12,6 +12,7 @@ import org.sidos.database.query.models._
 import fi.sirunsivut.persons.Person
 import org.sidos.database.relational.RelationalQueryRunner
 import fi.sirunsivut.project.{TaskEntity, Task}
+import org.sidos.browser.Browser
 
 class QueryTests extends TestNGSuite with ShouldMatchers {
     @Test
@@ -32,6 +33,8 @@ class QueryTests extends TestNGSuite with ShouldMatchers {
 
       val task2 = Task.create(database)
       task2.name.set("Don't do work")
+
+      new Browser()
 
       /*
       val query = Task.instances.where(task => task.name._like("Do%") or task.responsibles._contains(person)).orderBy(task => List(task.name._ascending)).skip(10).take(10)

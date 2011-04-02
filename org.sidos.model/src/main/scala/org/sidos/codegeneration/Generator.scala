@@ -85,11 +85,11 @@ class Generator
 """
 group sidos;
 
-entity(packageName, typeName, typeFullName, typeHash, properties, extends) ::= <<
+entity(packageName, typeName, typeFullName, typeHash, properties, extends, entityType) ::= <<
 
 package <packageName>
 
-trait <typeName> extends org.sidos.codegeneration.Entity <extends>
+trait <typeName> extends <entityType> <extends>
 {
 
   <properties:property()>
@@ -207,6 +207,7 @@ def <it.name> = new <it.queryablePropertyType> { def path = "<it.fullName>" :: o
 
       val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))
 
+      typeClassTemplate.setAttribute("entityType", if(_type.name == "org.sidos.metamodel.Entity") "org.sidos.codegeneration.Entity" else "org.sidos.metamodel.Entity")
       typeClassTemplate.setAttribute("extends", extendsString)
 
 //      val superTypesList = getGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + ", " + getGeneratedTypeName(_))
