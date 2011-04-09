@@ -1,6 +1,7 @@
 package org.sidos.browser.common
 
 import org.sidos.browser.widget.{ViewDefinition, TextEditor, Table}
+import org.sidos.browser.widget.table.TableModel
 
 class BuildInViewFactory extends IViewFactory {
 
@@ -19,6 +20,8 @@ class BuildInViewFactory extends IViewFactory {
 
   def CreateView(viewDefinition: ViewDefinition) =
   {
-    viewDefinition.
+    viewDefinition.hasType.get.name.get match {
+      case TableModel.entityType.name => new Table()
+    }
   }
 }

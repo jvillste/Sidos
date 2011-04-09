@@ -31,6 +31,7 @@ class Generator
       return;
 
     var source = ""
+    println("Source directory: " + sourceDirectory)
     for (file <- new File(sourceDirectory).listFiles) {
       if (!file.isDirectory)
         if (file.getName.toLowerCase.endsWith(".sidos"))
@@ -62,7 +63,7 @@ class Generator
   def directoryExists(path:String) : Boolean = {
     if(!new File(path).exists)
     {
-      println(path + "does not exist")
+      println("The path " + path + " does not exist.")
       return false
     }else
     {
@@ -206,8 +207,8 @@ def <it.name> = new <it.queryablePropertyType> { def path = "<it.fullName>" :: o
       }).toArray)
 
       val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))
-
-      typeClassTemplate.setAttribute("entityType", if(_type.name == "org.sidos.metamodel.Entity") "org.sidos.codegeneration.Entity" else "org.sidos.metamodel.Entity")
+      println(_type.name)
+      typeClassTemplate.setAttribute("entityType", if(_type.name == "org.sidos.metamodel.entity") "org.sidos.codegeneration.Entity" else "org.sidos.metamodel.Entity")
       typeClassTemplate.setAttribute("extends", extendsString)
 
 //      val superTypesList = getGeneratedTypeName(_type.superTypes.head) + _type.superTypes.tail.foldLeft("")( _ + ", " + getGeneratedTypeName(_))
@@ -274,7 +275,7 @@ def getBy<it.name>(value:<it.range>) = new <it.domain>Entity(database, database.
 
   def writeFile(baseDirectory:String, packageName:String, fileName:String, contents:String)
   {
-    val fileFullName = baseDirectory + "\\" + packageName.replace(".","\\") + "\\" + fileName
+    val fileFullName = baseDirectory + File.separator + packageName.replace(".",File.separator) + File.separator + fileName
     println("Writing to  " + fileFullName)
     if(baseDirectory != null)
     {
