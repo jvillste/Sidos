@@ -78,7 +78,8 @@
 <node CREATED="1303482623960" ID="ID_637218850" MODIFIED="1303482625565" TEXT="mallinnus">
 <node CREATED="1303482259402" ID="ID_482908172" MODIFIED="1303482268829" TEXT="scala luokkien generointi k&#xe4;sitemallista"/>
 <node CREATED="1303482282402" ID="ID_1049222092" MODIFIED="1303482292228" TEXT="generoitujen scala luokkien rikastus k&#xe4;sin kirjoitetulla koodilla"/>
-<node CREATED="1303482270608" ID="ID_1440745465" MODIFIED="1303482276085" TEXT="k&#xe4;sitemallin generoint scala luokista"/>
+<node CREATED="1303482270608" ID="ID_1440745465" MODIFIED="1303485497001" TEXT="k&#xe4;sitemallin generointi scala luokista"/>
+<node CREATED="1303485466606" ID="ID_1787953044" MODIFIED="1303485486758" TEXT="k&#xe4;sitemallin ja k&#xe4;sin kirjoitettujen scala luokkien mappaus k&#xe4;sin"/>
 </node>
 <node CREATED="1303482643536" ID="ID_1981710469" MODIFIED="1303482647662" TEXT="tilan k&#xe4;sittely">
 <node CREATED="1303482424122" ID="ID_409334658" MODIFIED="1303483163784" TEXT="scala luokat tarjoaa rajapinnan kantaan eik&#xe4; tallenna tietoa itseens&#xe4;">
@@ -88,7 +89,9 @@
 <node CREATED="1303483184599" ID="ID_54476424" MODIFIED="1303483230905" TEXT="rekister&#xf6;im&#xe4;ll&#xe4; callbackeja kantaan muutosten kuuntelemiseksi ja tekem&#xe4;ll&#xe4; muutokset aina muuttamalla kantaa eik&#xe4; suoraan omaa tilaa"/>
 <node CREATED="1303483233744" ID="ID_1857298384" MODIFIED="1303483266930" TEXT="Lis&#xe4;&#xe4;m&#xe4;ll&#xe4; k&#xe4;&#xe4;nn&#xf6;svaiheessa scala luokkaan toiminnot muutosten viemiseksi kantaan ja kannasta olioon kuten hibernate nyt"/>
 </node>
-<node CREATED="1303482467284" ID="ID_1863332087" MODIFIED="1303482498471" TEXT="scala luokat lataavat tilan pyynn&#xf6;st&#xe4; kannasta ja viev&#xe4;t sen kantaan pyynn&#xf6;st&#xe4;"/>
+<node CREATED="1303482467284" ID="ID_1863332087" MODIFIED="1303482498471" TEXT="scala luokat lataavat tilan pyynn&#xf6;st&#xe4; kannasta ja viev&#xe4;t sen kantaan pyynn&#xf6;st&#xe4;">
+<node CREATED="1303485438574" ID="ID_1020906688" MODIFIED="1303485446190" TEXT="kuten .net luokkien serialisointi reflektiolla xml:ksi"/>
+</node>
 </node>
 </node>
 <node CREATED="1303479922439" ID="ID_216326909" MODIFIED="1303479927455" TEXT="sovellukset">
