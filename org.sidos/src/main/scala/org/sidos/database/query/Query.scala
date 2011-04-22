@@ -13,7 +13,6 @@ class BooleanExpression
 {
   def or(otherBooleanExpression:BooleanExpression) = Or(this,otherBooleanExpression)
   def and(otherBooleanExpression:BooleanExpression) = And(this,otherBooleanExpression)
-
 }
 
 case class Like(path:List[String], value:String) extends BooleanExpression

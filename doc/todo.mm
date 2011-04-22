@@ -1,4 +1,4 @@
-<map version="0.8.1">
+<map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node CREATED="1293698946468" ID="Freemind_Link_1348532607" MODIFIED="1293699243171" TEXT="todo">
 <node CREATED="1293699021781" ID="_" MODIFIED="1293699067875" POSITION="right" TEXT="lasketut propertyt">
@@ -51,7 +51,7 @@
 <node CREATED="1295043032312" ID="Freemind_Link_281993114" MODIFIED="1295043036406" POSITION="right" TEXT="Temporaaliset tietokannat">
 <node CREATED="1295043039031" ID="Freemind_Link_284094042" MODIFIED="1295043075859" TEXT="Miten piirret&#xe4;&#xe4;n asianhallintaj&#xe4;rjestelm&#xe4;ss&#xe4; k&#xe4;yr&#xe4; avoimien issueiden m&#xe4;&#xe4;r&#xe4;st&#xe4; ajan funktiona?"/>
 </node>
-<node CREATED="1293699293265" ID="Freemind_Link_427240188" MODIFIED="1295589333187" POSITION="right" TEXT="databinding">
+<node CREATED="1293699293265" ID="Freemind_Link_427240188" MODIFIED="1303241744709" POSITION="right" TEXT="databinding">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1293700787687" ID="Freemind_Link_1826071307" MODIFIED="1293700805265" TEXT="propertyn muutosten kuuntelu">
 <node CREATED="1293912167312" ID="Freemind_Link_1539541012" MODIFIED="1293912200750" TEXT="mill&#xe4; eri tavoilla muutoksia voi suodattaa?">
@@ -61,7 +61,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1296192536531" ID="Freemind_Link_1909101827" MODIFIED="1296192539906" POSITION="right" TEXT="K&#xe4;ytt&#xf6;liittym&#xe4;">
+<node CREATED="1296192536531" ID="Freemind_Link_1909101827" MODIFIED="1303241815012" POSITION="right" TEXT="K&#xe4;ytt&#xf6;liittym&#xe4;">
 <node CREATED="1295043349718" ID="Freemind_Link_653139292" MODIFIED="1295043360250" TEXT="K&#xe4;ytt&#xf6;liittym&#xe4;n tyylitys">
 <node CREATED="1295043365203" ID="Freemind_Link_838134255" MODIFIED="1295043411656" TEXT="valitaan elementti ja asetetaan sen visuaalisia ominaisuuksia"/>
 </node>
@@ -71,6 +71,38 @@
 <node CREATED="1296192714843" ID="Freemind_Link_1828461702" MODIFIED="1296192724656" TEXT="N&#xe4;kymien kuvaus">
 <node CREATED="1296192748093" ID="Freemind_Link_1867894006" MODIFIED="1296192752796" TEXT="internal scala dsl"/>
 <node CREATED="1296192756156" ID="Freemind_Link_370182335" MODIFIED="1296192766640" TEXT="sidos skeema"/>
+</node>
+</node>
+<node CREATED="1303479087114" ID="ID_529293809" MODIFIED="1303479116517" POSITION="right" TEXT="olioiden ja tietokannan tilan synkronointi">
+<node CREATED="1303479909898" ID="ID_1451384444" MODIFIED="1303479912477" TEXT="toteutustavat">
+<node CREATED="1303482623960" ID="ID_637218850" MODIFIED="1303482625565" TEXT="mallinnus">
+<node CREATED="1303482259402" ID="ID_482908172" MODIFIED="1303482268829" TEXT="scala luokkien generointi k&#xe4;sitemallista"/>
+<node CREATED="1303482282402" ID="ID_1049222092" MODIFIED="1303482292228" TEXT="generoitujen scala luokkien rikastus k&#xe4;sin kirjoitetulla koodilla"/>
+<node CREATED="1303482270608" ID="ID_1440745465" MODIFIED="1303482276085" TEXT="k&#xe4;sitemallin generoint scala luokista"/>
+</node>
+<node CREATED="1303482643536" ID="ID_1981710469" MODIFIED="1303482647662" TEXT="tilan k&#xe4;sittely">
+<node CREATED="1303482424122" ID="ID_409334658" MODIFIED="1303483163784" TEXT="scala luokat tarjoaa rajapinnan kantaan eik&#xe4; tallenna tietoa itseens&#xe4;">
+<node CREATED="1303483168114" ID="ID_1870905155" MODIFIED="1303483174035" TEXT="k&#xe4;sitemallista generoidut luokat nyt"/>
+</node>
+<node CREATED="1303482437602" ID="ID_631798823" MODIFIED="1303482465064" TEXT="scala luokat tallentaa tiedon itseens&#xe4; ja p&#xe4;ivitt&#xe4;v&#xe4;t omaa tilaansa kannan mukaan tai kantaa omien muutostensa mukaan">
+<node CREATED="1303483184599" ID="ID_54476424" MODIFIED="1303483230905" TEXT="rekister&#xf6;im&#xe4;ll&#xe4; callbackeja kantaan muutosten kuuntelemiseksi ja tekem&#xe4;ll&#xe4; muutokset aina muuttamalla kantaa eik&#xe4; suoraan omaa tilaa"/>
+<node CREATED="1303483233744" ID="ID_1857298384" MODIFIED="1303483266930" TEXT="Lis&#xe4;&#xe4;m&#xe4;ll&#xe4; k&#xe4;&#xe4;nn&#xf6;svaiheessa scala luokkaan toiminnot muutosten viemiseksi kantaan ja kannasta olioon kuten hibernate nyt"/>
+</node>
+<node CREATED="1303482467284" ID="ID_1863332087" MODIFIED="1303482498471" TEXT="scala luokat lataavat tilan pyynn&#xf6;st&#xe4; kannasta ja viev&#xe4;t sen kantaan pyynn&#xf6;st&#xe4;"/>
+</node>
+</node>
+<node CREATED="1303479922439" ID="ID_216326909" MODIFIED="1303479927455" TEXT="sovellukset">
+<node CREATED="1303479930512" ID="ID_470444334" MODIFIED="1303479939650" TEXT="grafiikka">
+<node CREATED="1303479959892" ID="ID_1084923632" MODIFIED="1303479961359" TEXT="cad"/>
+</node>
+<node CREATED="1303479946977" ID="ID_514954302" MODIFIED="1303479953069" TEXT="tietokantak&#xe4;ytt&#xf6;liittym&#xe4;t"/>
+</node>
+<node CREATED="1303480973250" ID="ID_1879391972" MODIFIED="1303480974805" TEXT="vaatimukset">
+<node CREATED="1303480975713" ID="ID_1074423268" MODIFIED="1303480980120" TEXT="siisti DSL"/>
+<node CREATED="1303480981400" ID="ID_67963583" MODIFIED="1303481002372" TEXT="Muokkaus graafisesti"/>
+<node CREATED="1303481076750" ID="ID_1660142328" MODIFIED="1303481097630" TEXT="luokkien luku ja vienti kantaan mahdollisimman v&#xe4;h&#xe4;ll&#xe4; koodilla">
+<node CREATED="1303481106028" ID="ID_1185232361" MODIFIED="1303481126836" TEXT="dsl tuottaa dataa kantaan ja oliot lukevat kannasta"/>
+</node>
 </node>
 </node>
 <node CREATED="1295042504296" ID="Freemind_Link_913815603" MODIFIED="1295042518875" POSITION="left" TEXT="prosessien v&#xe4;linen kommunikaatio">

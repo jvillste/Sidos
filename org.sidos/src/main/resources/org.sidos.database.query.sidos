@@ -2,10 +2,9 @@ org.sidos.database.query.models
 {
   org.sidos.metamodel as metamodel
 
-  sorting
+  ordering
   {
-    subjectTypeHash : string
-    propertyName : string
+    path : string list
     descending : boolean
   }
 
@@ -26,7 +25,9 @@ org.sidos.database.query.models
   query
   {
     filter : filter
-    sortings : sorting list
+    orderings : ordering list
+    takeCount : integer
+    skipCount : integer
   }
 
   instanceQuery : query

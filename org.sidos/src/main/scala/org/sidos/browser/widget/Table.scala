@@ -7,6 +7,7 @@ import swing._
 import org.sidos.database.Database
 import org.sidos.database.notification._
 import org.sidos.codegeneration.Property
+import table.{ColumnModel, TableModel}
 
 object TableConstructors
 {
