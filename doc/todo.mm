@@ -94,6 +94,14 @@
 </node>
 </node>
 </node>
+<node CREATED="1303756724479" ID="ID_271868729" MODIFIED="1303756733906" TEXT="olioiden lataus kannasta">
+<node CREATED="1303756735956" ID="ID_1245103859" MODIFIED="1303756776333" TEXT="miten voidaan luoda oikean tyyppinen olio kannassa olevan tiedon pohjalta?">
+<node CREATED="1303756779204" ID="ID_1192099909" MODIFIED="1303756792699" TEXT="kovakoodataan mahdolliset tyypit"/>
+<node CREATED="1303756793749" ID="ID_40608089" MODIFIED="1303759008675" TEXT="luodaan olioita reflektiolla sen j&#xe4;lkeen kun mahdolliset tyypit ensin rekister&#xf6;iv&#xe4;t itsens&#xe4; loaderille">
+<icon BUILTIN="messagebox_warning"/>
+</node>
+</node>
+</node>
 <node CREATED="1303479922439" ID="ID_216326909" MODIFIED="1303479927455" TEXT="sovellukset">
 <node CREATED="1303479930512" ID="ID_470444334" MODIFIED="1303479939650" TEXT="grafiikka">
 <node CREATED="1303479959892" ID="ID_1084923632" MODIFIED="1303479961359" TEXT="cad"/>

@@ -8,23 +8,29 @@ org.sidos.database.query.models
     descending : boolean
   }
 
-  filter
+  booleanExpression
+
+  like : booleanExpression
+    {
+      path : string list
+      value : string
+    }
+
+  equals : booleanExpression
   {
-    subjectTypeHash : string
-    propertyName : string
-    filterOperator : filterOperator
+    path : string list
+    value : metamodel.entity
   }
 
-  filterOperator
-
-  equalsString : filterOperator
+  and : booleanExpression
   {
-    value : string
+    booleanExpression1 : booleanExpression
+    booleanExpression2 : booleanExpression
   }
-
+  
   query
   {
-    filter : filter
+    filter : booleanExpression
     orderings : ordering list
     takeCount : integer
     skipCount : integer

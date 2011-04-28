@@ -15,7 +15,7 @@ class Browser[T](database:Database, viewDefinition:Entity) extends MainFrame
   title = "Sidos Browser"
 
   contents = new FlowPanel {
-    contents += new widget.Table(database,entities, table(column(typeHash,propertyName)))
+    //contents += new widget.Table(database,entities, table(column(typeHash,propertyName)))
     border = Swing.EmptyBorder(15, 10, 10, 10)
   }
 }

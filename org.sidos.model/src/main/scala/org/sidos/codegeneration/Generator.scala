@@ -116,10 +116,9 @@ object <typeName>
 
 }
 
-class <typeName>Pattern(val path:List[String] = List.empty[String])
+class <typeName>Pattern(val _path:List[java.lang.String] = List.empty[java.lang.String])
 {
-  private def outerPath = path
-  
+  def _outerPath = _path
   <properties:patternProperty()>
 
 }
@@ -144,10 +143,10 @@ entityType.properties =  <it.name> :: entityType.properties
 
 patternProperty() ::= <<
 <if(it.isEntityProperty)>
-def <it.name> = new <it.rangeClassName>Pattern("<it.fullName>" :: outerPath) with <it.queryablePropertyType>
+def <it.name> = new <it.rangeClassName>Pattern("<it.fullName>" :: _path) with <it.queryablePropertyType>
 
 <else>
-def <it.name> = new <it.queryablePropertyType> { def path = "<it.fullName>" :: outerPath }
+def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: _outerPath }
 
 <endif>
 >>

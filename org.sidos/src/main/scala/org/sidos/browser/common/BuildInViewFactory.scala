@@ -2,6 +2,7 @@ package org.sidos.browser.common
 
 import org.sidos.browser.widget.{ViewDefinition, TextEditor, Table}
 import org.sidos.browser.widget.table.TableModel
+import swing.{Label, Component}
 
 class BuildInViewFactory extends IViewFactory {
 
@@ -20,8 +21,9 @@ class BuildInViewFactory extends IViewFactory {
 
   def CreateView(viewDefinition: ViewDefinition) =
   {
-    viewDefinition.hasType.get.name.get match {
-      case TableModel.entityType.name => new Table()
-    }
+    //viewDefinition.hasType.get.name.get match {
+      //case TableModel.entityType.name => new Table()
+    //}
+    new Label()
   }
 }
