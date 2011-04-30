@@ -20,11 +20,14 @@ case class Or(booleanExpression1:BooleanExpression,booleanExpression2:BooleanExp
 case class And(booleanExpression1:BooleanExpression,booleanExpression2:BooleanExpression) extends BooleanExpression
 case object True extends BooleanExpression
 case class ContainsEntity(path:List[String], id:UUID) extends BooleanExpression
+
 case class Equals[T](path:List[String], value:T) extends BooleanExpression
 {
   def save(dataAccess:DataAccess)
   {
-
+    var equalsModel = models.Equals.create(dataAccess)
+    equalsModel.path.add(path)
+    equalsModel.value.set(value)
   }
 }
 

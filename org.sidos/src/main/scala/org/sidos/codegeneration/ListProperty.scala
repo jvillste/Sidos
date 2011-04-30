@@ -5,6 +5,7 @@ import org.sidos.database.notification.{ListChange, Add, Remove, Change}
 class ListProperty[T:ClassManifest](val entity:Entity, val typeHash:String, val propertyName:String) extends Property
 {
   def add(value:T) =  entity.addToList(typeHash, propertyName, value)
+  def add(traversable:Traversable[T]) = for(value <- traversable) entity.addToList(typeHash, propertyName, value)
   def get : List[T] = entity.getList[T](typeHash, propertyName)
 
   def addListener(callback : (ListChange[T])=>Unit)
