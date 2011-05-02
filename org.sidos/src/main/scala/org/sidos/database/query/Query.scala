@@ -44,6 +44,11 @@ trait QueryableStringProperty extends QueryableProperty
   def _like(value:String) = Like(_path, value)
 }
 
+trait QueryableIntegerProperty extends QueryableProperty
+{
+  def _equals(value:java.lang.Integer) = Equals(_path, value)
+}
+
 trait QueryableBooleanProperty extends QueryableProperty
 {
   def _equals(value:Boolean) = Equals(_path, value)
@@ -75,6 +80,15 @@ class Query[PatternType](patternFactory : () => PatternType)
   def orderBy(orderingGenerator:(PatternType)=>List[Ordering]) = { this.orderings = orderingGenerator(patternFactory()); this }
   def take(takeCount:Int) = { this.takeCount = Some(takeCount); this }
   def skip(skipCount:Int) = { this.skipCount = Some(skipCount); this }
+
+
+  def save(dataAccess:DataAccess)
+  {
+    var queryModel = models.Query.create(dataAccess)
+    queryModel.takeCount.set(takeCount.get)
+    queryModel.skipCount.set(takeCount.get)
+    queryModel
+  }
 }
 
 case class InstanceQuery[PatternType,EntityType](typeHash:String,

@@ -127,11 +127,9 @@ class <typeName>Pattern(val _path:List[java.lang.String] = List.empty[java.lang.
 
 property() ::= <<
 <if(it.isEntityProperty)>
-
 val <it.name> = new <it.propertyType>[<it.modelType>, <it.databaseType>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,id:<it.databaseType>) => new <it.modelType>Entity(dataAccess,id), (entity:<it.modelType>) => entity.id)
 
 <else>
-
 val <it.name> = new <it.propertyType>[<it.modelType>, <it.databaseType>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,value:<it.databaseType>) => value, (value:<it.modelType>) => value)
 
 <endif>
@@ -178,6 +176,7 @@ def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: 
 
         val databaseType = property.range.name match {
           case "org.sidos.primitive.string" => "java.lang.String"
+          case "org.sidos.primitive.integer" => "java.lang.Integer"
           case "org.sidos.primitive.boolean" => "java.lang.Boolean"
           case "org.sidos.primitive.time" => "java.util.Date"
           case _ => "java.util.UUID"
@@ -185,12 +184,14 @@ def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: 
 
         val modelType = property.range.name match {
           case "org.sidos.primitive.string" => "java.lang.String"
+          case "org.sidos.primitive.integer" => "java.lang.Integer"
           case "org.sidos.primitive.boolean" => "java.lang.Boolean"
           case "org.sidos.primitive.time" => "java.util.Date"
           case _ => getFullGeneratedTypeName(property.range)
         }
 
         val isEntityProperty = ! Set("org.sidos.primitive.string",
+                                     "org.sidos.primitive.integer",
                                      "org.sidos.primitive.boolean",
                                      "org.sidos.primitive.time").contains(property.range.name)
 
