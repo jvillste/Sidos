@@ -16,7 +16,7 @@ class EntityListProperty[T <: Entity](val entity:Entity, val typeHash:String, va
     (0 to values.size - 1).foreach { index =>
       callback(Add(index,values(index)))
     }
-    
+
     addListener(callback)
   }
 

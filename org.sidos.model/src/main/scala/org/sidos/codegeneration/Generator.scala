@@ -127,10 +127,12 @@ class <typeName>Pattern(val _path:List[java.lang.String] = List.empty[java.lang.
 
 property() ::= <<
 <if(it.isEntityProperty)>
-val <it.name> = new <it.propertyType>[<it.rangeClassName>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,id:java.util.UUID) => new <it.rangeClassName>Entity(dataAccess,id))
+
+val <it.name> = new <it.propertyType>[<it.modelType>, <it.databaseType>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,id:<it.databaseType>) => new <it.modelType>Entity(dataAccess,id), (entity:<it.modelType>) => entity.id)
 
 <else>
-val <it.name> = new <it.propertyType>(this, <it.domainClassName>.entityType.hash, "<it.fullName>")
+
+val <it.name> = new <it.propertyType>[<it.modelType>, <it.databaseType>](this, <it.domainClassName>.entityType.hash, "<it.fullName>", (dataAccess:org.sidos.database.DataAccess,value:<it.databaseType>) => value, (value:<it.modelType>) => value)
 
 <endif>
 >>
@@ -159,6 +161,8 @@ def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: 
       case class Property(@BeanProperty name:String,
                      @BeanProperty fullName:String,
                      @BeanProperty propertyType:String,
+                     @BeanProperty databaseType:String,
+                     @BeanProperty modelType:String,
                      @BeanProperty rangeClassName:String,
                      @BeanProperty domainClassName:String,
                      @BeanProperty associationType:String,
@@ -167,16 +171,28 @@ def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: 
 
       typeClassTemplate.setAttribute("properties", _type.properties.map((property) => {
 
-        val propertyType = (ripNamespace(property.range.name), property.associationType) match {
-          case ("string",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[String]"
-          case ("string",AssociationType.List) => "org.sidos.codegeneration.ListProperty[String]"
-          case ("boolean",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[java.lang.Boolean]"
-          case ("boolean",AssociationType.List) => "org.sidos.codegeneration.ListProperty[java.lang.Boolean]"
-          case ("time",AssociationType.Single) => "org.sidos.codegeneration.SingleValueProperty[java.util.Date]"
-          case ("time",AssociationType.List) => "org.sidos.codegeneration.ListProperty[java.util.Date]"
-          case (_,AssociationType.Single) => "org.sidos.codegeneration.EntityProperty"
-          case (_,AssociationType.List) => "org.sidos.codegeneration.EntityListProperty"
+        val propertyType = property.associationType match {
+          case AssociationType.Single => "org.sidos.codegeneration.SingleValueProperty"
+          case AssociationType.List => "org.sidos.codegeneration.ListProperty"
         }
+
+        val databaseType = property.range.name match {
+          case "org.sidos.primitive.string" => "java.lang.String"
+          case "org.sidos.primitive.boolean" => "java.lang.Boolean"
+          case "org.sidos.primitive.time" => "java.util.Date"
+          case _ => "java.util.UUID"
+        }
+
+        val modelType = property.range.name match {
+          case "org.sidos.primitive.string" => "java.lang.String"
+          case "org.sidos.primitive.boolean" => "java.lang.Boolean"
+          case "org.sidos.primitive.time" => "java.util.Date"
+          case _ => getFullGeneratedTypeName(property.range)
+        }
+
+        val isEntityProperty = ! Set("org.sidos.primitive.string",
+                                     "org.sidos.primitive.boolean",
+                                     "org.sidos.primitive.time").contains(property.range.name)
 
         val queryablePropertyType = (ripNamespace(property.range.name), property.associationType) match {
           case ("string",AssociationType.Single) => "org.sidos.database.query.QueryableStringProperty"
@@ -197,12 +213,13 @@ def <it.name> = new <it.queryablePropertyType> { def _path = "<it.fullName>" :: 
         Property(name = ripNamespace(property.name),
                 fullName = property.name,
                 propertyType = propertyType,
+                databaseType = databaseType,
+                modelType = modelType,
                 rangeClassName = getFullGeneratedTypeName(property.range),
                 domainClassName = getFullGeneratedTypeName(property.domain),
                 associationType = property.associationType.toString,
-                isEntityProperty = propertyType.equals("org.sidos.codegeneration.EntityProperty") | propertyType.equals("org.sidos.codegeneration.EntityListProperty"),
+                isEntityProperty = isEntityProperty,
                 queryablePropertyType = queryablePropertyType)
-
       }).toArray)
 
       val extendsString =  _type.superTypes.foldLeft("")( _ + " with " + getFullGeneratedTypeName(_))

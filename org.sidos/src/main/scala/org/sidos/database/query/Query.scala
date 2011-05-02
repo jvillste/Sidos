@@ -27,7 +27,7 @@ case class Equals[T](path:List[String], value:T) extends BooleanExpression
   {
     var equalsModel = models.Equals.create(dataAccess)
     equalsModel.path.add(path)
-    equalsModel.value.set(value)
+    //equalsModel.value.set(value)
   }
 }
 

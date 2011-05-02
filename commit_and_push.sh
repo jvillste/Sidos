@@ -1,2 +1,2 @@
 #!/bin/bash
-git add -A; git commit -m "x"; git push origin
+git add -A; git commit -m "$1"; git push origin
