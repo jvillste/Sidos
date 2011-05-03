@@ -11,16 +11,18 @@ org.sidos.database.query.models
   booleanExpression
 
   like : booleanExpression
-    {
-      path : string list
-      value : string
-    }
-
-  equals : booleanExpression
   {
     path : string list
-    value : metamodel.entity
+    value : string
   }
+
+  equals[T] : booleanExpression
+  {
+    path : string list
+    value : T
+  }
+
+  equalsString : equals[string]
 
   and : booleanExpression
   {

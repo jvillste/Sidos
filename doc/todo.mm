@@ -73,7 +73,7 @@
 <node CREATED="1296192756156" ID="Freemind_Link_370182335" MODIFIED="1296192766640" TEXT="sidos skeema"/>
 </node>
 </node>
-<node CREATED="1303479087114" ID="ID_529293809" MODIFIED="1303479116517" POSITION="right" TEXT="olioiden ja tietokannan tilan synkronointi">
+<node CREATED="1303479087114" FOLDED="true" ID="ID_529293809" MODIFIED="1304366255210" POSITION="right" TEXT="olioiden ja tietokannan tilan synkronointi">
 <node CREATED="1303479909898" ID="ID_1451384444" MODIFIED="1303479912477" TEXT="toteutustavat">
 <node CREATED="1303482623960" ID="ID_637218850" MODIFIED="1303482625565" TEXT="mallinnus">
 <node CREATED="1303482259402" ID="ID_482908172" MODIFIED="1303482268829" TEXT="scala luokkien generointi k&#xe4;sitemallista"/>
@@ -119,8 +119,13 @@
 <node CREATED="1295042504296" ID="Freemind_Link_913815603" MODIFIED="1295042518875" POSITION="left" TEXT="prosessien v&#xe4;linen kommunikaatio">
 <node CREATED="1295042524531" ID="Freemind_Link_1299167868" MODIFIED="1295042534421" TEXT="AKKA actoreilla?"/>
 </node>
-<node CREATED="1295047573734" ID="Freemind_Link_1613252410" MODIFIED="1295589310796" POSITION="left" TEXT="mallinnuskieli">
-<icon BUILTIN="button_ok"/>
+<node CREATED="1295047573734" ID="Freemind_Link_1613252410" MODIFIED="1304366266135" POSITION="left" TEXT="mallinnuskieli">
+<node CREATED="1304366267966" ID="ID_1320204132" MODIFIED="1304366270894" TEXT="geneeriset tyypit">
+<node CREATED="1304366278279" ID="ID_1179241255" MODIFIED="1304366288160" TEXT="esimerkiksi Equals[T]"/>
+</node>
+<node CREATED="1304366382394" ID="ID_458064817" MODIFIED="1304366391623" TEXT="pohjatyyppi primitiivityypeille">
+<node CREATED="1304366395689" ID="ID_1846690566" MODIFIED="1304366423291" TEXT="miten kannassa tallennetaan sarakkeesen mink&#xe4; tahansa tyyppinen arvo niin ett&#xe4; tyyppitieto s&#xe4;ilyy?"/>
+</node>
 </node>
 </node>
 </map>
