@@ -7,3 +7,4 @@ project/boot/
 .idea/libraries
 */src/generated
 /test-output
+*.iml
