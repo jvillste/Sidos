@@ -16,13 +16,11 @@ org.sidos.database.query.models
     value : string
   }
 
-  equals[T] : booleanExpression
+  equals : booleanExpression
   {
     path : string list
-    value : T
+    value : string
   }
-
-  equalsString : equals[string]
 
   and : booleanExpression
   {
